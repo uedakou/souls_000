@@ -111,7 +111,6 @@ public:
 	bool IsAllDraw() { return m_bAllDraw; }				// 全体で描画するか
 	bool IsPoseDraw() { return m_bPoseDraw; }		// ポーズ中描画するか
 
-	void DeathFlag() { m_bDeath = true; }	// 自分自身の死亡フラグ
 	bool IsDeathFlag() { return m_bDeath ; }		// 自分自身の死亡フラグ
 
 protected:

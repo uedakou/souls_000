@@ -95,32 +95,7 @@ CObject::TYPE CObject::GetType()
 //============================================
 void CObject::Release()
 {
-
-	CObject* pNext = m_pNext;	// 次保管
-	CObject* pPrev = m_pPrev;	// 前保管
-	if (pNext != nullptr)
-	{// 次に前を入れる
-		pNext->SetPrev(pPrev);
-	}
-	if (pPrev != nullptr)
-	{// 前に次を入れる
-		pPrev->SetNext(pNext);
-	}
-
-	for (int nCnt = 0; nCnt < MAX_PRIORITY; nCnt++)
-	{
-		if (m_pTop[nCnt] == this)
-		{
-			m_pTop[nCnt] = pNext;
-		}
-		if (m_pCur[nCnt] == this)
-		{
-			m_pCur[nCnt] = pPrev;
-		}
-	}
-
-	Uninit();
-	delete this;
+	m_bDeath = true;
 }
 //============================================
 // 全オブジェクト解放
@@ -135,7 +110,7 @@ void CObject::ReleaseAll()
 		{
 			CObject* pNext = pObjact->GetNext();	//	次保管
 
-			pObjact->DeathFlag();
+			pObjact->Release();
 
 			pObjact = pNext;
 		}
@@ -152,7 +127,28 @@ void CObject::ReleaseDeathFlag()
 			CObject* pNext = pObjact->m_pNext;	//	次保管
 			if (pObjact->m_bDeath == true)
 			{// 死亡フラグが立っていたら
-				pObjact->Release();
+				CObject* pNext = pObjact->m_pNext;	// 次保管
+				CObject* pPrev = pObjact->m_pPrev;	// 前保管
+				if (pNext != nullptr)
+				{// 次に前を入れる
+					pNext->SetPrev(pPrev);
+				}
+				if (pPrev != nullptr)
+				{// 前に次を入れる
+					pPrev->SetNext(pNext);
+				}
+
+				if (m_pTop[nCntPriority] == pObjact)
+				{
+					m_pTop[nCntPriority] = pNext;
+				}
+				if (m_pCur[nCntPriority] == pObjact)
+				{
+					m_pCur[nCntPriority] = pPrev;
+				}
+
+				pObjact->Uninit();
+				delete pObjact;
 			}
 			pObjact = pNext;
 		}

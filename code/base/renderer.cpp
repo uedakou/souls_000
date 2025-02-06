@@ -28,7 +28,7 @@ CRenderer::~CRenderer()
 {
 	if (m_pText != nullptr)
 	{
-		m_pText->DeathFlag();
+		m_pText->Release();
 	}
 }
 //============================================

@@ -382,7 +382,7 @@ CObjectMotion::~CObjectMotion()
 
 		if (m_pParts[nCnt] != nullptr)
 		{
-			m_pParts[nCnt]->DeathFlag();
+			m_pParts[nCnt]->Release();
 			m_pParts[nCnt] = nullptr;
 		}
 	}
@@ -418,7 +418,7 @@ void CObjectMotion::Uninit()
 	{
 		m_pParts[nCntParts]->Uninit();
 	}
-	CObject::DeathFlag();
+	CObject::Release();
 }
 //============================================
 // XVˆ—
